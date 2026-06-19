@@ -1,9 +1,24 @@
-Why I built it this way:
+## Why I built it this way
 
-Originally I called the API every time I tested, which burned through the free tier limit fast. I switched to caching responses locally so I could keep developing without hitting rate limits, 
-then excluded the Sheety endpoint from caching specifically because I needed fresh sheet data on every real run. Took two days to figure out a separate auth bug was actually a Google account mismatch 
-between Sheety and the linked sheet, not a code issue.
+Started with a flat script, then restructured into 5 files (DataManager, 
+FlightSearch, FlightData, NotificationManager, main.py) once I understood 
+why OOP made sense here — each class owns one responsibility and main.py 
+just coordinates them, instead of one file doing everything.
 
+Used requests_cache during development to avoid burning through SerpAPI's 
+free tier while testing repeatedly, but explicitly excluded the Sheety 
+endpoint from caching — sheet data needs to be fresh on every real run, 
+or price comparisons would be wrong.
+
+Spent two days on a Sheety auth bug that looked like a token problem but 
+was actually a Google account mismatch — the form collecting responses 
+was linked to a different Google account than the one Sheety was 
+authenticated with. Taught me to check account-level config before 
+re-debugging code that was already correct.
+
+Added a direct-flight-first, indirect-flight-fallback search instead of 
+one blanket search, since some routes only have connecting flights — 
+this meant tracking number of stops in the FlightData object too.
 
 What i made:
 
