@@ -16,7 +16,7 @@ A hands-on collection of **30+ mini-projects and daily challenges** built during
 | [day-35-rain-alert](./day-35-rain-alert) | Automate weather checks and alerts | APIs, environment variables, notifications |
 | [day-36-Stock_news_monitoring_project](./day-36-Stock_news_monitoring_project) | Monitor news for stock events | API integration, alert pipelines |
 | [day-38-Workout Tracking Using Google Sheets](./day-38-Workout%20Tracking%20Using%20Google%20Sheets) | Log workouts and track progress in Google Sheets | Nutrition API, Sheety integration, data persistence |
-| [day-39-Flight Dealer Finder](./day-39-Flight%20Dealer%20Finder) | Find cheap flights and send alerts | Kiwi.com API, Sheety API, SMS notifications |
+| [day-39-Flight Dealer Finder](./day-39-Flight%20Dealer%20Finder) | Find cheap flights and send alerts | SerpAPI, Sheety integration, SMS notifications |
 | [day-40-web_scrapping_project](./day-40-web_scrapping_project) | Scrape and parse web data | BeautifulSoup, HTML parsing, data export |
 | [day-48-Selenium](./day-48-Selenium) | Browser automation workflows | Selenium, form filling, end-to-end flows |
 | [habit-tracker](./habit-tracker) | Track habits visually with Pixela | API integration, data visualization |
@@ -72,9 +72,9 @@ Some projects require external API credentials. Set them as environment variable
 
 ### Flight Deals Finder
 **day-39-Flight Dealer Finder** requires:
-- Kiwi.com API key
-- Sheety API token for Google Sheets
-- Twilio credentials for SMS notifications
+- `SerpApi_key` — Get from [SerpAPI](https://serpapi.com/)
+- Sheety API token for Google Sheets integration
+- `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `twilio_number`, `phone_number` for SMS notifications
 
 ### Habit Tracker
 **habit-tracker** requires:
