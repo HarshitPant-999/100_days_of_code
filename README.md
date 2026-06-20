@@ -47,15 +47,3 @@ python path/to/script.py
 ```
 
 **Note:** Some projects require API keys (weather, stock news, Google Sheets). Check individual project READMEs for setup instructions. Selenium projects require a matching browser driver on your PATH.
-
-## Why This Matters
-
-- **Practical experience** — Each folder is a working prototype demonstrating rapid ideation and execution
-- **Relevant skills** — Automation, scraping, APIs, data handling, and integration tooling
-- **Growth & consistency** — A 100-day challenge shows persistence, curiosity, and ability to learn new libraries fast
-
-## Want to Learn More?
-
-- **Live demo** — Happy to walk through 2–3 projects and discuss trade-offs
-- **Code review** — Pick a project and I'll explain the architecture and design decisions
-- **Tests & rigor** — I can add unit or integration tests to any project to demonstrate testing practices
