@@ -1,0 +1,13 @@
+firefox_profile/
+
+# Python virtual environment
+venv/
+env/
+.venv/
+
+# Python cache/bytecode
+__pycache__/
+*.pyc
+.env
+
+
