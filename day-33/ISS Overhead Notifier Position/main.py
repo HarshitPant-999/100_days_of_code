@@ -57,10 +57,6 @@ while True:
     print(f"Is night: {is_night()}")
     print(f"Is overhead: {is_overhead()}")
     print("---checking---")
-#starttls() → encrypts the connection 🔒
-#Use App Password not your real Gmail password
-#\n\n separates subject from body
- #checks every 60 second
 
 print(f"Sunset: {sunset_hour}")
 print(f"Sunrise: {sunrise_hour}")
