@@ -2,10 +2,8 @@ name: Tesla Stock News Twilio Alerts
 
 on:
   schedule:
-    # ⏱️ Triggers automatically Monday through Friday at 9:00 AM IST (3:30 AM UTC)
     - cron: '30 3 * * 1-5'
-  workflow_dispatch: # 🎯 This gives you a button on GitHub to run it manually anytime
-
+  workflow_dispatch:
 jobs:
   send-alerts:
     runs-on: ubuntu-latest
@@ -18,7 +16,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-          cache: 'pip' # Speeds up runs by caching your libraries
+          cache: 'pip' 
 
       - name: Install Twilio and Requests Libraries
         run: |
@@ -26,11 +24,9 @@ jobs:
           pip install requests twilio
 
       - name: Execute Stock Tracking Script
-        # 🔑 Maps your GitHub Secrets directly into the script's memory
         env:
           TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
           TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
           NEWS_API_KEY: ${{ secrets.NA_API_KEY }}
           AVS_API_KEY: ${{ secrets.AVS_API_KEY }}
-        # ⚠️ Replace 'your_script.py' with the actual filename of your Python file
         run: python3 main.py
