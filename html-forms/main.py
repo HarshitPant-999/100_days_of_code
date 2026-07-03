@@ -13,7 +13,7 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        
+
         return f"Username: {username}, Password: {password}"
 
     return render_template("login.html")
