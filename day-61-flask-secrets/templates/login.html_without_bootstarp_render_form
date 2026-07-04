@@ -1,0 +1,21 @@
+{% extends "base.html" %}	
+{% block content %}
+        <div class="container">
+		<h1>Login</h1>
+        <form method="POST" action="{{ url_for('login') }}" novalidate>
+            {{ form.hidden_tag() }}
+ 
+          <p>{{ form.email.label }}  <br> {{ form.email(size=30) }}</p>
+          {% for err in form.email.errors %}
+          <span style="color:red">{{ err }} </span>
+          {% endfor %}
+          <p>{{ form.password.label }} <br> {{ form.password(size=30) }}</p>
+          {% for err in form.password.errors %}
+          <span style="color:red">{{ err }} </span>
+          {% endfor %}  
+          {{ form.submit }}
+        </form>
+        </div>
+{% endblock %}
+<!--input type="submit" value="Log in" ---- THIS CAN BE REPLACED BY {{ form.submit }} after </p>
+

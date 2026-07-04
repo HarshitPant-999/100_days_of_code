@@ -3,4 +3,4 @@ class Post:
         self.id = post_id
         self.title = title
         self.subtitle = subtitle
-        sellf.body = body
+        self.body = body
