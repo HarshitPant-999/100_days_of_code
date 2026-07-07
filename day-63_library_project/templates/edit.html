@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Book Name: {{ Book.title }}</title>
+    <title>Current Rating: {{ Book.rating }}</title>
+  </head>
+  <body>
+    <form action="{{ url_for('edit') }}" method="POST">
+      {{ form.hidden_tag() }}
+      <input type="{{ text }}" name="rating"/>
+      <button type="submit">Change Rating</button>
+    </form>
+  </body>
+</html>
+
