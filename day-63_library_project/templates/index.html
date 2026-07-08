@@ -9,8 +9,9 @@
     <ul>
     {% if all_books %} 
         {% for book in all_books %}
-        <li>{{ book.title }}, {{ book.author }}, {{ book.rating }}</li>
-          <a href="edit">Edit Rating</a>
+        <li><a href="{{ url_for('Delete', id=book.id) }}">Delete</a>
+          {{ book.title }}, {{ book.author }}, {{ book.rating }}</li>
+          <a href="{{ url_for('edit', id=book.id) }}">Edit Rating</a>
         {% endfor %}
     {% else %}
         <p> Library is empty. </p>

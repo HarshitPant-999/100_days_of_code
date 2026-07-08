@@ -18,7 +18,7 @@ db.init_app(app)
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(250), unique=True, nullable=False)
-    author = db.Column(db.String(250), unique=True, nullable=False)
+    author = db.Column(db.String(250), unique=False, nullable=False)
     rating = db.Column(db.Float(10), nullable=False)
 
 with app.app_context():
@@ -55,14 +55,23 @@ def add():
 
 @app.route("/edit", methods=["GET", "POST"])
 def edit():
-    form = ChangeRatingForm()
-    if form.validate_on_submit():
-        new_rating = db.session.execute(db.select(Book).where(Book.id == 1))
-        new_rating.rating("text")
+    if request.method == "POST":
+        book_id = request.form["id"]
+        book_to_update = db.get_or_404(Book, book_id)
+        book_to_update.rating = request.form["rating"]
         db.session.commit()
         return redirect(url_for("home"))
+    book_id = request.args.get('id')
+    book_selected = db.get_or_404(Book, book_id) #WHAT'S get_or_404 
+    return render_template("edit.html", book=book_selected)
 
-    return render_template("edit.html", form=form)
+@app.route("/delete")
+def Delete():
+    book_id = request.args.get('id')
+    book_to_delete = db.get_or_404(Book, book_id)
+    db.session.delete(book_to_delete)
+    db.session.commit()
+    return redirect(url_for('home'))
 
 if __name__ == "__main__":
     app.run(debug=True)
