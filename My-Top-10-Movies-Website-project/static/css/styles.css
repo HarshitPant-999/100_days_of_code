@@ -125,9 +125,12 @@
 	 transform: rotateY(-180deg);
 }
  .back {
+         justify-content: space-between;
+         flex-direction: column;
 	 background: #fff;
 	 transform: rotateY(-180deg);
 	 padding: 0 2em;
+
 }
  .card:hover .back {
 	 transform: rotateY(0deg);

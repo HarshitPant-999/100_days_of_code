@@ -33,7 +33,7 @@ class Movie(db.Model):
     ranking = db.Column(db.Float(250), nullable=True)
     review = db.Column(db.String(2500), nullable=True)
     img_url = db.Column(db.String(10), nullable=False)
-    
+
 
 class RateMovieForm(FlaskForm):
     rating = StringField("rating")
@@ -56,7 +56,7 @@ class RateMovieForm(FlaskForm):
 
 @app.route("/")
 def home():
-    all_movies = db.session.execute(db.select(Movie).order_by(Movie.rating)).scalars().all()
+    all_movies = db.session.execute(db.select(Movie).order_by(Movie.rating.desc())).scalars().all()
     return render_template("index.html", movies=all_movies)
 
 @app.route("/add", methods=["POST", "GET"])
@@ -65,6 +65,8 @@ def add():
     if form.validate_on_submit():
         response = requests.get(url="https://api.themoviedb.org/3/search/movie", params={"query":form.title.data, "api_key":api_key, "include_adult":"True", "language":"en-US"})
         data = response.json()
+        return render_template("select.html")
+        poster_path = data["results"][0]["poster_path"]
         new_movie = Movie(
             title = data["results"][0]["title"],
             year = data["results"][0]["release_date"],
@@ -72,7 +74,7 @@ def add():
             ranking = 0,
             rating = 0,
             review = 0,
-            img_url = data["results"][0]["poster_path"]
+            img_url = f"https://image.tmdb.org/t/p/w500/{poster_path}"
         )
         db.session.add(new_movie)
         db.session.commit()
