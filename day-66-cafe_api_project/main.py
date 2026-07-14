@@ -23,10 +23,10 @@ class Cafe(db.Model):
     img_url: Mapped[str] = mapped_column(String(500), nullable=False)
     location: Mapped[str] = mapped_column(String(250), nullable=False)
     seats: Mapped[str] = mapped_column(String(250), nullable=False)
-    has_toilet: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    has_toilet: Mapped[bool] = mapped_column(Boolean, nullable=True)
     has_wifi: Mapped[bool] = mapped_column(Boolean, nullable=False)
-    has_sockets: Mapped[bool] = mapped_column(Boolean, nullable=False)
-    can_take_calls: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    has_sockets: Mapped[bool] = mapped_column(Boolean, nullable=True)
+    can_take_calls: Mapped[bool] = mapped_column(Boolean, nullable=True)
     coffee_price: Mapped[str] = mapped_column(String(250), nullable=True)
 
     def to_dict(self):
@@ -76,8 +76,24 @@ def search():
         return jsonify(cafes = [cafe.to_dict() for cafe in all_cafes])
     else:
         return jsonify(error={"Not Found": "Sorry, we don't have a cafe at that location."}), 404
-# HTTP POST - Create Record
 
+@app.route("/get", methods=["GET", "POST"])
+def get_new_cafe():
+    if request.method == "POST":
+        cafe = Cafe(
+            name = request.form.get("name"),
+            map_url = request.form.get("map_url"),
+            img_url = request.form.get("img_url"),
+            location = request.form.get("location"),
+            seats = request.form.get("seats"),
+            has_toilet = request.form.get("has_toilet") == "true",
+            has_wifi = request.form.get("has_wifi") == "true",
+            has_sockets = request.form.get("has_sockets") == "true",
+            can_take_calls = request.form.get("can_take_calls") == "true",
+            coffee_price = request.form.get("coffee_price"))
+        db.session.add(cafe)
+        db.session.commit()
+        return jsonify(response={"success": "Successfully added the new cafe."})
 # HTTP PUT/PATCH - Update Record
 
 # HTTP DELETE - Delete Record
