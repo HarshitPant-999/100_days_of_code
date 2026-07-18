@@ -22,7 +22,6 @@ app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
 Bootstrap5(app)
 ckeditor = CKEditor(app)
 
-# CREATE DATABASE
 class Base(DeclarativeBase):
     pass
 
@@ -32,7 +31,7 @@ db.init_app(app)
 
 date = datetime.now()
 today_date = date.date()
-# CONFIGURE TABLE
+
 class BlogPost(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     title: Mapped[str] = mapped_column(String(250), unique=True, nullable=False)
