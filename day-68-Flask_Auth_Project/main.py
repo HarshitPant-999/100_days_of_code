@@ -50,6 +50,7 @@ def register():
         user = db.session.execute(db.select(User).where(User.email == request.form.get("email"))).scalar() 
         if user:
             flash("This email already exists!")
+            return redirect (url_for("login"))
         else:
             user = User(
             name = request.form.get("name"),
