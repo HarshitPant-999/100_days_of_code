@@ -47,21 +47,37 @@ def home():
 @app.route('/register', methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        user = User(
-        name = request.form.get("name"),
-        email = request.form.get("email"),
-        password = generate_password_hash(request.form.get("password"), method="pbkdf2:sha256", salt_length=8)
-        )
-        db.session.add(user)
-        db.session.commit()
-        login_user(user)
-        return redirect (url_for("secrets"))
+        user = db.session.execute(db.select(User).where(User.email == request.form.get("email"))).scalar() 
+        if user:
+            flash("This email already exists!")
+        else:
+            user = User(
+            name = request.form.get("name"),
+            email = request.form.get("email"),
+            password = generate_password_hash(request.form.get("password"), method="pbkdf2:sha256", salt_length=8)
+            )
+            db.session.add(user)
+            db.session.commit()
+            login_user(user)
+            return redirect (url_for("secrets"))
     return render_template("register.html")
 
 
-@app.route('/login')
+@app.route('/login', methods=["GET", "POST"])
 def login():
+    if request.method == "POST":
+        user = db.session.execute(db.select(User).where(User.email == request.form.get("email"))).scalar()
+        if user:
+            if check_password_hash(user.password, request.form.get("password")):
+                login_user(user)
+                return redirect(url_for('secrets'))
+            else:
+                flash("Password is wrong!")
+        else:
+            flash("You aren't registered yet")
+            print("flask called")
     return render_template("login.html")
+
 
 
 @app.route('/secrets')
@@ -72,8 +88,8 @@ def secrets():
 
 @app.route('/logout')
 def logout():
-    pass
-
+    logout_user()
+    return redirect (url_for("home"))
 
 @app.route('/download')
 @login_required
