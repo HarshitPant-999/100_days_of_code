@@ -6,7 +6,7 @@ from flask_gravatar import Gravatar
 from flask_login import login_required, UserMixin, login_user, LoginManager, current_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship, DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import Integer, String, Text
+from sqlalchemy import Integer, String, Text, ForeignKey
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import RegisterForm , LoginForm #CommentForm
@@ -20,7 +20,6 @@ Bootstrap5(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-
 
 # CREATE DATABASE
 class Base(DeclarativeBase):
@@ -38,7 +37,8 @@ class BlogPost(db.Model):
     subtitle: Mapped[str] = mapped_column(String(250), nullable=False)
     date: Mapped[str] = mapped_column(String(250), nullable=False)
     body: Mapped[str] = mapped_column(Text, nullable=False)
-    author: Mapped[str] = mapped_column(String(250), nullable=False)
+    author_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
+    author = relationship("User", back_populates="posts")
     img_url: Mapped[str] = mapped_column(String(250), nullable=False)
 
 
@@ -47,7 +47,7 @@ class User(db.Model, UserMixin):
     email: Mapped[str] = mapped_column(String(100), unique=True)
     password: Mapped[str] = mapped_column(String(100))
     name: Mapped[str] = mapped_column(String(1000))
-
+    posts = relationship("BlogPost", back_populates="author")
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -57,8 +57,16 @@ def load_user(user_id):
 with app.app_context():
     db.create_all()
 
+def admin_only(function):
+    @wraps(function)
+    def wrapper(*args, **kwargs):
+        if current_user.is_authenticated == True and current_user.id == 1:
+            return function(*args, **kwargs)
+        else:
+            return abort(403)
+    return wrapper
 
-# TODO: Use Werkzeug to hash the user's password when creating a new user.
+
 @app.route('/register', methods=["GET", "POST"])
 def register():
     form = RegisterForm()
@@ -81,7 +89,7 @@ def register():
     return render_template("register.html", form=form)
 
 
-# TODO: Retrieve a user from the database based on their email. 
+
 @app.route('/login', methods=["POST", "GET"])
 def login():
     form = LoginForm()
@@ -111,7 +119,7 @@ def get_all_posts():
     return render_template("index.html", all_posts=posts)
 
 
-# TODO: Allow logged-in users to comment on posts
+
 @app.route("/post/<int:post_id>")
 def show_post(post_id):
     requested_post = db.get_or_404(BlogPost, post_id)
@@ -120,7 +128,7 @@ def show_post(post_id):
 
 
 @app.route("/new-post", methods=["GET", "POST"])
-@login_required
+@admin_only
 def add_new_post():
     form = CreatePostForm()
     if form.validate_on_submit():
@@ -138,8 +146,9 @@ def add_new_post():
     return render_template("make-post.html", form=form)
 
 
-@login_required
+
 @app.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
+@admin_only
 def edit_post(post_id):
     post = db.get_or_404(BlogPost, post_id)
     edit_form = CreatePostForm(
@@ -159,8 +168,9 @@ def edit_post(post_id):
         return redirect(url_for("show_post", post_id=post.id))
     return render_template("make-post.html", form=edit_form, is_edit=True)
 
-@login_required
+
 @app.route("/delete/<int:post_id>")
+@admin_only
 def delete_post(post_id):
     post_to_delete = db.get_or_404(BlogPost, post_id)
     db.session.delete(post_to_delete)
