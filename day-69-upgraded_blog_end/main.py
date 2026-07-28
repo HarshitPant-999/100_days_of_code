@@ -9,7 +9,7 @@ from sqlalchemy.orm import relationship, DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String, Text, ForeignKey
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
-from forms import RegisterForm , LoginForm #CommentForm
+from forms import RegisterForm , LoginForm , CommentForm
 from forms import CreatePostForm
 
 app = Flask(__name__)
@@ -21,15 +21,16 @@ Bootstrap5(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-# CREATE DATABASE
+#DATABASE
 class Base(DeclarativeBase):
     pass
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
 
-# CONFIGURE TABLES
+#CONFIGURE TABLES
 class BlogPost(db.Model):
     __tablename__ = "blog_posts"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -40,7 +41,7 @@ class BlogPost(db.Model):
     author_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
     author = relationship("User", back_populates="posts")
     img_url: Mapped[str] = mapped_column(String(250), nullable=False)
-
+    comments = relationship("Comment", back_populates="post")
 
 class User(db.Model, UserMixin):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -48,6 +49,15 @@ class User(db.Model, UserMixin):
     password: Mapped[str] = mapped_column(String(100))
     name: Mapped[str] = mapped_column(String(1000))
     posts = relationship("BlogPost", back_populates="author")
+    comments = relationship("Comment", back_populates="author")
+
+class Comment(db.Model):
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    body: Mapped[str] = mapped_column(Text, nullable=False)
+    author_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
+    post_id: Mapped[int] = mapped_column(Integer, ForeignKey("blog_posts.id"))
+    author = relationship("User", back_populates="comments")
+    post = relationship("BlogPost", back_populates="comments")
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -120,10 +130,23 @@ def get_all_posts():
 
 
 
-@app.route("/post/<int:post_id>")
+@app.route("/post/<int:post_id>", methods=["GET", "POST"])
 def show_post(post_id):
+    form = CommentForm()
     requested_post = db.get_or_404(BlogPost, post_id)
-    return render_template("post.html", post=requested_post)
+    if form.validate_on_submit():
+        if current_user.is_authenticated == True:
+            comments = Comment(
+            body = form.text.data,
+            author_id = current_user.id,
+            post_id = post_id)
+            db.session.add(comments)
+            db.session.commit()
+            return redirect (url_for("show_post", post_id=post_id))
+        else:
+            flash("You need to login or register to comment")
+            return redirect (url_for("login"))
+    return render_template("post.html", post=requested_post, form=form)
 
 
 
