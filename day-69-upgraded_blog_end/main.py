@@ -13,6 +13,8 @@ from forms import RegisterForm , LoginForm , CommentForm
 from forms import CreatePostForm
 import os
 from dotenv import load_dotenv
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 
 load_dotenv()
 
@@ -62,6 +64,9 @@ class Comment(db.Model):
     post_id: Mapped[int] = mapped_column(Integer, ForeignKey("blog_posts.id"))
     author = relationship("User", back_populates="comments")
     post = relationship("BlogPost", back_populates="comments")
+
+admin = Admin(app, name='My App Admin', template_mode='bootstrap4')
+admin.add_view(ModelView(User, db.session))
 
 @login_manager.user_loader
 def load_user(user_id):
