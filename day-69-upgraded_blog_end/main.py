@@ -65,7 +65,7 @@ class Comment(db.Model):
     author = relationship("User", back_populates="comments")
     post = relationship("BlogPost", back_populates="comments")
 
-admin = Admin(app, name='My App Admin', template_mode='bootstrap4')
+admin = Admin(app, name='My App Admin')
 admin.add_view(ModelView(User, db.session))
 
 @login_manager.user_loader
