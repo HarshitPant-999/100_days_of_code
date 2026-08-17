@@ -1,6 +1,6 @@
 # 100 Days of Code — Python Projects & Daily Challenges
 
-A hands-on collection of **30+ mini-projects and daily challenges** built during my #100DaysOfCode journey. Each project is self-contained, practical, and demonstrates core software engineering skills: automation, web scraping, data processing, API integration, and clean code.
+A hands-on collection of **50+ mini-projects and daily challenges** built during my #100DaysOfCode journey. Each project is self-contained, practical, and demonstrates core software engineering skills: automation, web scraping, data processing, API integration, Web Development and clean code.
 
 ## What You'll Find Here
 
@@ -8,26 +8,18 @@ A hands-on collection of **30+ mini-projects and daily challenges** built during
 - **Real-world automation** — weather alerts, stock monitoring, browser automation, habit tracking
 - **Data & scraping** — web scraping, structured data parsing, API integration
 - **Games & UI projects** — small projects demonstrating logic and event handling
-
-## Highlighted Projects
-
-| Project | Purpose | Key Skills |
-|---------|---------|-----------|
-| [day-35-rain-alert](./day-35-rain-alert) | Automate weather checks and alerts | APIs, environment variables, notifications |
-| [day-36-Stock_news_monitoring_project](./day-36-Stock_news_monitoring_project) | Monitor news for stock events | API integration, alert pipelines |
-| [day-38-Workout Tracking Using Google Sheets](./day-38-Workout%20Tracking%20Using%20Google%20Sheets) | Log workouts and track progress in Google Sheets | Nutrition API, Sheety integration, data persistence |
-| [day-39-Flight Dealer Finder](./day-39-Flight%20Dealer%20Finder) | Find cheap flights and send alerts | SerpAPI, Sheety integration, SMS notifications |
-| [day-40-web_scrapping_project](./day-40-web_scrapping_project) | Scrape and parse web data | BeautifulSoup, HTML parsing, data export |
-| [day-48-Selenium](./day-48-Selenium) | Browser automation workflows | Selenium, form filling, end-to-end flows |
-| [habit-tracker](./habit-tracker) | Track habits visually with Pixela | API integration, data visualization |
-| [snake-game](./snake-game) | Classic snake game | Turtle graphics, event handling |
-| [turtle-crossing-project](./turtle-crossing-project) | Game demonstrating collision logic | OOP, event-driven design |
+- **Web Development** - Flask, DataBases(SQLite, SQLAlchemy),CSS (Framework: BootStrap), Authentication , deployment, Version Control , VC from terminal.  
 
 ## Tech Stack
 
-**Language:** Python  
+**Language:** Python 
 **Libraries & Tools:** requests, BeautifulSoup, Selenium, pandas, smtplib, gspread (Google Sheets API), datetime, json, csv  
 **Best Practices:** Virtual environments, requirements.txt, modular scripts, project-level documentation
+
+## IDE 
+**NANO (LINUX BUILT IN TEXT EDITOR)** 
+
+## Machine ## **Linux, Distro-Debian**
 
 ## Quick Start
 
